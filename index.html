@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSS and JS-->
+    <link rel="stylesheet" href="stylesheets/style.css">
+    <script type="module" src="javascripts/script.js" defer></script>
+    <!-- Bootstrap 5-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css"/>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+
+  </head>
+  <body>
+    <div class="wave-container">
+    <svg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' viewBox='0 250 800 120' opacity='1'>
+      <g stroke-width="3" stroke="#4a5f08" fill="none" stroke-linecap="round" transform="matrix(1,0,0,1,-5,267.50340270996094)">
+        <path d="M10,10C23.06818181818182,11.041666666666666,44.507575757575765,18.541666666666668,72.72727272727273,15C100.9469696969697,11.458333333333332,115.15151515151517,-7.416666666666667,145.45454545454547,-7C175.75757575757575,-6.583333333333333,187.87878787878788,16.375,218.1818181818182,17C248.4848484848485,17.625,260.6060606060606,-5.666666666666666,290.90909090909093,-4C321.21212121212125,-2.3333333333333335,333.33333333333337,25,363.6363636363637,25C393.939393939394,25,406.06060606060606,-4.625,436.3636363636364,-4C466.6666666666667,-3.375,478.7878787878788,25.916666666666668,509.0909090909091,28C539.3939393939395,30.083333333333332,551.5151515151515,4.958333333333333,581.8181818181819,6C612.1212121212122,7.041666666666667,624.2424242424242,32.166666666666664,654.5454545454546,33C684.848484848485,33.833333333333336,696.969696969697,8.958333333333334,727.2727272727274,10C757.5757575757577,11.041666666666666,784.848484848485,32.166666666666664,800.0000000000001,38"></path>
+        <path d="M10,10C23.06818181818182,11.041666666666666,44.507575757575765,18.541666666666668,72.72727272727273,15C100.9469696969697,11.458333333333332,115.15151515151517,-7.416666666666667,145.45454545454547,-7C175.75757575757575,-6.583333333333333,187.87878787878788,16.375,218.1818181818182,17C248.4848484848485,17.625,260.6060606060606,-5.666666666666666,290.90909090909093,-4C321.21212121212125,-2.3333333333333335,333.33333333333337,25,363.6363636363637,25C393.939393939394,25,406.06060606060606,-4.625,436.3636363636364,-4C466.6666666666667,-3.375,478.7878787878788,25.916666666666668,509.0909090909091,28C539.3939393939395,30.083333333333332,551.5151515151515,4.958333333333333,581.8181818181819,6C612.1212121212122,7.041666666666667,624.2424242424242,32.166666666666664,654.5454545454546,33C684.848484848485,33.833333333333336,696.969696969697,8.958333333333334,727.2727272727274,10C757.5757575757577,11.041666666666666,784.848484848485,32.166666666666664,800.0000000000001,38" transform="matrix(1,0,0,1,0,39)"></path>
+      </g>
+    </svg>
+  </div>
+  <!-- Navbar-->
+  <header> 
+    <nav> <a href="/"> <img src="images/logo.svg" alt="Alafia braiding logo" class="logo"/></a>
+      <ul>
+        <li> <a href="#about">About us</a></li>
+      </ul>
+    </nav>
+  </header>
+  <main>
+    <section class="hero">
+      <video class="background-video" autoplay muted loop plays-inline>
+        <source src="images/banner.mp4" type="video/mp4">
+      </video>
+      <div class="content">
+        <h1>Alafia Braiding Salon</h1>
+        <a href="#booking">BOOK WITH US</a>
+      </div>
+    </section>
+    <section id="booking" class="container mt-3">
+      <h2>Booking</h2>
+      <form>
+        <section class="mb-3">
+          <h3>Contact Informtion</h3>
+          <div class="mb-3">
+            <label class="form-label" for="fname">First name</label>
+            <input id="fname" class="form-control" type="text" name="fname" placeholder="First name" required="">
+          </div>
+          <div class="mb-3">
+            <label class="form-label d-block" for="tel">Phone Number</label>
+            <input id="tel" class="form-control" type="tel" name="tel" placeholder="Phone number" required="">
+          </div>
+          <div id="tel-display" name="tel-display"></div>
+          <div class="mb-3">
+            <label class="form-label" for="mail">Email</label>
+            <input id="mail" class="form-control" type="email" name="mail" placeholder="Email adress" required="">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="date">Appointment date</label>
+            <input id="date" class="form-control" type="date" name="date" required="">
+          </div>
+        </section>
+        <section class="mb-3">
+          <h3>Hairstyle informations</h3>
+          <div class="mb-3">
+            <label class="form-label" for="style">Select a style</label>
+            <select id="style" class="form-select" name="style" required="">
+              <option value="" disabled="" selected="">Select an option</option>
+              <option value="twist">Twists</option>
+              <option value="box">Box braids</option>
+              <option value="cornrow">Cornrows</option>
+              <option value="knotless">Knotless braids</option>
+              <option value="loc">Locs maintainance</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="slen">Select length for prefered style</label>
+            <select id="slen" class="form-select" name="slen" required="">
+              <option value="" disabled="" selected="">Select an option</option>
+              <option value="shorter">Shorter</option>
+              <option value="shoulder">Shoulder</option>
+              <option value="mid-back">Mid back</option>
+              <option value="waist">Waist</option>
+              <option value="below-waist">Below waist</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="nlen">Select the length of your hair</label>
+            <select id="nlen" class="form-select" name="nlen" required="">
+              <option value="" disabled="" selected="">Select an option</option>
+              <option value="shorter">Shorter</option>
+              <option value="shoulder">Shoulder</option>
+              <option value="mid-back">Mid back</option>
+              <option value="waist">Waist</option>
+              <option value="below-waist">Below waist</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="img-input">Add an image of the prefered style</label>
+            <input id="img-input" class="form-control" type="file" accept="image/jpeg, image/png, image/heic, image/webp" name="img-input" required="">
+            <p>Image  must be .png, .jpeg, .jpeg or .webp less than 3MB</p>
+          </div>
+        </section>
+        <section class="mb-3">
+          <h3>Optional services</h3>
+          <div class="mb-3">
+            <label class="form-label" for="add-service">Additional services</label>
+            <div class="form-check">
+              <input id="attach" class="form-check-input" type="checkbox" name="attach" value="attachment">
+              <label class="form-check-label">Attachment</label>
+            </div>
+            <div class="form-check">
+              <input id="wash" class="form-check-input" type="checkbox" name="wash" value="washing">
+              <label class="form-check-label">Washing</label>
+            </div>
+            <div class="form-check">
+              <input id="blow" class="form-check-input" type="checkbox" name="blow" value="blowdrying">
+              <label class="form-check-label">Blow drying</label>
+            </div>
+            <div class="form-check">
+              <input id="attach" class="form-check-input" type="checkbox" name="cowrie" value="cowrie">
+              <label class="form-check-label">Cowrie shell</label>
+            </div>
+            <div class="form-check">
+              <input id="wash" class="form-check-input" type="checkbox" name="bead" value="bead">
+              <label class="form-check-label">Beads</label>
+            </div>
+            <div class="form-check">
+              <input id="blow" class="form-check-input" type="checkbox" name="cuff" value="cuff">
+              <label class="form-check-label">Cuffs</label>
+            </div>
+          </div>
+        </section>
+        <section class="mb-3">
+          <h3>Additional Information</h3>
+          <div class="mb-3">
+            <label class="form-label" for="allergy">Any scalp sentivities</label>
+            <input id="allergy" class="form-control" type="text" name="allergy">
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="note">Additional notes</label>
+            <input id="note" class="form-control" type="text" name="note">
+          </div>
+        </section>
+        <input class="btn btn-outline-primary" type="submit">
+      </form>
+    </section>
+    <div class="wave-container">
+    <svg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' viewBox='0 250 800 120' opacity='1'>
+      <g stroke-width="3" stroke="#4a5f08" fill="none" stroke-linecap="round" transform="matrix(1,0,0,1,-5,267.50340270996094)">
+        <path d="M10,10C23.06818181818182,11.041666666666666,44.507575757575765,18.541666666666668,72.72727272727273,15C100.9469696969697,11.458333333333332,115.15151515151517,-7.416666666666667,145.45454545454547,-7C175.75757575757575,-6.583333333333333,187.87878787878788,16.375,218.1818181818182,17C248.4848484848485,17.625,260.6060606060606,-5.666666666666666,290.90909090909093,-4C321.21212121212125,-2.3333333333333335,333.33333333333337,25,363.6363636363637,25C393.939393939394,25,406.06060606060606,-4.625,436.3636363636364,-4C466.6666666666667,-3.375,478.7878787878788,25.916666666666668,509.0909090909091,28C539.3939393939395,30.083333333333332,551.5151515151515,4.958333333333333,581.8181818181819,6C612.1212121212122,7.041666666666667,624.2424242424242,32.166666666666664,654.5454545454546,33C684.848484848485,33.833333333333336,696.969696969697,8.958333333333334,727.2727272727274,10C757.5757575757577,11.041666666666666,784.848484848485,32.166666666666664,800.0000000000001,38"></path>
+        <path d="M10,10C23.06818181818182,11.041666666666666,44.507575757575765,18.541666666666668,72.72727272727273,15C100.9469696969697,11.458333333333332,115.15151515151517,-7.416666666666667,145.45454545454547,-7C175.75757575757575,-6.583333333333333,187.87878787878788,16.375,218.1818181818182,17C248.4848484848485,17.625,260.6060606060606,-5.666666666666666,290.90909090909093,-4C321.21212121212125,-2.3333333333333335,333.33333333333337,25,363.6363636363637,25C393.939393939394,25,406.06060606060606,-4.625,436.3636363636364,-4C466.6666666666667,-3.375,478.7878787878788,25.916666666666668,509.0909090909091,28C539.3939393939395,30.083333333333332,551.5151515151515,4.958333333333333,581.8181818181819,6C612.1212121212122,7.041666666666667,624.2424242424242,32.166666666666664,654.5454545454546,33C684.848484848485,33.833333333333336,696.969696969697,8.958333333333334,727.2727272727274,10C757.5757575757577,11.041666666666666,784.848484848485,32.166666666666664,800.0000000000001,38" transform="matrix(1,0,0,1,0,39)"></path>
+      </g>
+    </svg>
+  </div>
+    <section class="about" id="about">
+      <h2>About us</h2>
+      <div>
+        <div class="img">
+          <img class="pf-pic" src="images/profile_pic.jpeg" alt="Image of the braider">
+        </div>
+        <div class="content">
+          <blockquote class="text">I am a part-time researcher and part-time braider with a full-time passion for creativity and care. At Alafia Braiding Salon, I bring artistry, culture, and intention into every style. Braiding is more than hair for me, it's a way to celebrate beauty, heritage, and individuality, while making each client feel confident, radiant, and at home.</blockquote>
+        </div>
+      </div>
+    </section>
+  </main>
+  <div class="wave-container">
+    <svg xmlns='http://www.w3.org/2000/svg' version='1.1' xmlns:xlink='http://www.w3.org/1999/xlink' xmlns:svgjs='http://svgjs.dev/svgjs' viewBox='0 250 800 120' opacity='1'>
+      <g stroke-width="3" stroke="#4a5f08" fill="none" stroke-linecap="round" transform="matrix(1,0,0,1,-5,267.50340270996094)">
+        <path d="M10,10C23.06818181818182,11.041666666666666,44.507575757575765,18.541666666666668,72.72727272727273,15C100.9469696969697,11.458333333333332,115.15151515151517,-7.416666666666667,145.45454545454547,-7C175.75757575757575,-6.583333333333333,187.87878787878788,16.375,218.1818181818182,17C248.4848484848485,17.625,260.6060606060606,-5.666666666666666,290.90909090909093,-4C321.21212121212125,-2.3333333333333335,333.33333333333337,25,363.6363636363637,25C393.939393939394,25,406.06060606060606,-4.625,436.3636363636364,-4C466.6666666666667,-3.375,478.7878787878788,25.916666666666668,509.0909090909091,28C539.3939393939395,30.083333333333332,551.5151515151515,4.958333333333333,581.8181818181819,6C612.1212121212122,7.041666666666667,624.2424242424242,32.166666666666664,654.5454545454546,33C684.848484848485,33.833333333333336,696.969696969697,8.958333333333334,727.2727272727274,10C757.5757575757577,11.041666666666666,784.848484848485,32.166666666666664,800.0000000000001,38"></path>
+        <path d="M10,10C23.06818181818182,11.041666666666666,44.507575757575765,18.541666666666668,72.72727272727273,15C100.9469696969697,11.458333333333332,115.15151515151517,-7.416666666666667,145.45454545454547,-7C175.75757575757575,-6.583333333333333,187.87878787878788,16.375,218.1818181818182,17C248.4848484848485,17.625,260.6060606060606,-5.666666666666666,290.90909090909093,-4C321.21212121212125,-2.3333333333333335,333.33333333333337,25,363.6363636363637,25C393.939393939394,25,406.06060606060606,-4.625,436.3636363636364,-4C466.6666666666667,-3.375,478.7878787878788,25.916666666666668,509.0909090909091,28C539.3939393939395,30.083333333333332,551.5151515151515,4.958333333333333,581.8181818181819,6C612.1212121212122,7.041666666666667,624.2424242424242,32.166666666666664,654.5454545454546,33C684.848484848485,33.833333333333336,696.969696969697,8.958333333333334,727.2727272727274,10C757.5757575757577,11.041666666666666,784.848484848485,32.166666666666664,800.0000000000001,38" transform="matrix(1,0,0,1,0,39)"></path>
+      </g>
+    </svg>
+  </div>
+  <section class="mb-3"> 
+      <div class="page-loader">
+        <h1>Loading</h1>
+        <div class="container-loader">
+          <div class="item"> </div>
+          <div class="item"> </div>
+          <div class="item"> </div>
+        </div>
+        <p>Please Wait</p>
+      </div>
+    </section>
+</body>
+</html>
