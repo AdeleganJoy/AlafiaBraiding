@@ -24,6 +24,10 @@ phNo.addEventListener("input", function () {
 function ImgSizeValidator(file){
   return (file.size < 3 * 1024 * 1024);
 }
+function ImgTypeValidator(file) {
+    var allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+    return allowedTypes.includes(file.type);
+}
 form.addEventListener('submit', async(e) =>{
     e.preventDefault();
     pageLoader.classList.remove('didLoad');
@@ -31,33 +35,36 @@ form.addEventListener('submit', async(e) =>{
 
     if (!phNoObject.isValidNumber()){
       alert("Incorrect phone number: Invalid phone number");
+      return;
     }
-    else{
-      const fd = new FormData(form);
-      const booking_obj = Object.fromEntries(fd);
-      const isAttachment = (booking_obj.attach != undefined);
-      const isBlowdry = (booking_obj.blow != undefined);
-      const isBead = (booking_obj.bead != undefined);
-      const isCowrie = (booking_obj.cowrie != undefined);
-      const isCuff = (booking_obj.cuff != undefined);
-      const isWash = (booking_obj.wash != undefined);
+    
+    const imgFormData = new FormData();
+    imgFormData.append("file", file);
+    imgFormData.append("upload_preset", "hairstyle");
 
-      const imgFormData = new FormData();
-
-      imgFormData.append("file", file);
-      imgFormData.append("upload_preset", "hairstyle");
-
-      const res = await fetch("https://api.cloudinary.com/v1_1/deeuemovu/upload", {
+    const res = await fetch("https://api.cloudinary.com/v1_1/deeuemovu/upload", {
         method: "POST",
         body: imgFormData
-      })
-      if (!res.ok) { 
-      throw new Error(`An error has occurred: ${res.status}`);
+    })
+
+    if (!res.ok) { 
+      alert("Unable to upload image. Please, check that image is .jpeg, .jpg, .webp or .png.");
+      return;
     }
 
-      const data = await res.json();
-      
-      const booking_info = {
+    const img_data = await res.json();
+    const fd = new FormData(form);
+    const booking_obj = Object.fromEntries(fd);
+    const isAttachment = (booking_obj.attach != undefined);
+    const isBlowdry = (booking_obj.blow != undefined);
+    const isBead = (booking_obj.bead != undefined);
+    const isCowrie = (booking_obj.cowrie != undefined);
+    const isCuff = (booking_obj.cuff != undefined);
+    const isWash = (booking_obj.wash != undefined);
+    fetch(`https://kspkoznzo5.execute-api.us-west-2.amazonaws.com/dev/bookings`, 
+      {
+        method: "POST",
+        body: JSON.stringify({
         fname: booking_obj.fname,
         tel: internationalPhNo,
         email: booking_obj.mail,
@@ -73,27 +80,21 @@ form.addEventListener('submit', async(e) =>{
         cuffs: isCuff,
         allergy: booking_obj.allergy,
         notes: booking_obj.note,
-        img_url: data.secure_url,
-        img_pub_id: data.public_id
-      }
-      
-      fetch(`https://dyjo4fteuhzzm65lg3w7ri3oim0ncjij.lambda-url.us-west-2.on.aws/`, 
-        {
-          method: "POST",
-          body: JSON.stringify(booking_info)
+        img_url: img_data.secure_url,
+        img_pub_id: img_data.public_id
+          })
           
         }
       )
       .then(res => res.json())
       
       .then(data=>{
-        console.log(data);
+        alert(JSON.stringify(data.message))
       })
       
       .catch(error =>
-        alert(error)
+        alert(error.error)
       );
-    }
     pageLoader.classList.remove('loading');
     pageLoader.classList.add('didLoad');
 
@@ -102,8 +103,9 @@ form.addEventListener('submit', async(e) =>{
 inputFile.addEventListener("change", async () => {
   file = inputFile.files[0]; 
   const is_valid_size = ImgSizeValidator(file);
-  if (!is_valid_size){
-    alert("Incorrect file size: File must be less than 3Mb");
+  const is_valid_type = ImgTypeValidator(file);
+  if (!is_valid_size || !is_valid_type){
+    alert("Unable to upload image. Please, check that image is .jpeg, .jpg, .webp or .png less than 3 MB");
     inputFile.value = '';
   }
 });
