@@ -90,6 +90,9 @@ form.addEventListener('submit', async(e) =>{
       
       .then(data=>{
         alert(JSON.stringify(data.message))
+        console.log(data);
+        console.log(JSON.stringify(data));
+        console.log(JSON.stringify(data).message);
       })
       
       .catch(error =>
