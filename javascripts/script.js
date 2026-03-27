@@ -89,7 +89,7 @@ form.addEventListener('submit', async(e) =>{
       .then(res => res.json())
       
       .then(data=>{
-        alert(JSON.stringify(data.message))
+        //alert(JSON.stringify(data.message))
         console.log(data);
         console.log(JSON.stringify(data));
         console.log(JSON.stringify(data).message);
