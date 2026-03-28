@@ -20,6 +20,24 @@ phNo.addEventListener("input", function () {
   phNoDisplay.textContent = internationalPhNo;
   phNoDisplayDiv.appendChild(phNoDisplay);
 });
+fname.addEventListener("input", function () {
+  const countryCode = phNoObject.getSelectedCountryData().dialCode;
+  internationalPhNo = `+${countryCode} ${this.value}`;
+  phNoDisplay.textContent = internationalPhNo;
+  phNoDisplayDiv.appendChild(phNoDisplay);
+});
+note.addEventListener("input", function () {
+  const countryCode = phNoObject.getSelectedCountryData().dialCode;
+  internationalPhNo = `+${countryCode} ${this.value}`;
+  phNoDisplay.textContent = internationalPhNo;
+  phNoDisplayDiv.appendChild(phNoDisplay);
+});
+allergy.addEventListener("input", function () {
+  const countryCode = phNoObject.getSelectedCountryData().dialCode;
+  internationalPhNo = `+${countryCode} ${this.value}`;
+  phNoDisplay.textContent = internationalPhNo;
+  phNoDisplayDiv.appendChild(phNoDisplay);
+});
 
 function ImgSizeValidator(file){
   return (file.size < 3 * 1024 * 1024);
@@ -32,27 +50,27 @@ form.addEventListener('submit', async(e) =>{
     e.preventDefault();
     pageLoader.classList.remove('didLoad');
     pageLoader.classList.add('loading');
+    const errorMessage = document.querySelectorAll('.error-message');
 
-    if (!phNoObject.isValidNumber()){
-      alert("Incorrect phone number: Invalid phone number");
-      return;
-    }
+    errorMessage.forEach(div => {
+      div.innerHTML = '';
+    });
     
     const imgFormData = new FormData();
     imgFormData.append("file", file);
     imgFormData.append("upload_preset", "hairstyle");
 
-    const res = await fetch("https://api.cloudinary.com/v1_1/deeuemovu/upload", {
+    const imgRes = await fetch("https://api.cloudinary.com/v1_1/deeuemovu/upload", {
         method: "POST",
         body: imgFormData
     })
 
-    if (!res.ok) { 
-      alert("Unable to upload image. Please, check that image is .jpeg, .jpg, .webp or .png.");
+    if (!imgRes.ok) { 
+      document.getElementById("img-error").textContent = `Unable to upload image. Please, check that image is .jpeg, .jpg, .webp or .png less than 3 MB`;
       return;
     }
 
-    const img_data = await res.json();
+    const img_data = await imgRes.json();
     const fd = new FormData(form);
     const booking_obj = Object.fromEntries(fd);
     const isAttachment = (booking_obj.attach != undefined);
@@ -61,7 +79,7 @@ form.addEventListener('submit', async(e) =>{
     const isCowrie = (booking_obj.cowrie != undefined);
     const isCuff = (booking_obj.cuff != undefined);
     const isWash = (booking_obj.wash != undefined);
-    const bookingRes = fetch(`https://kspkoznzo5.execute-api.us-west-2.amazonaws.com/dev/bookings`, 
+    const bookingRes = await fetch(`https://kspkoznzo5.execute-api.us-west-2.amazonaws.com/dev/bookings`, 
       {
         method: "POST",
         body: JSON.stringify({
@@ -86,12 +104,16 @@ form.addEventListener('submit', async(e) =>{
           
         }
       )
+    const bookingAnnouncement = await bookingRes.json();
     if (bookingRes.ok){
       document.getElementById("booking").style.display = "none";
       document.querySelector('#announcement').style.display = "block";
+      return;
     }
-    const bookingData = await bookingRes.json()
-    console.log(bookingData);
+    Object.keys(bookingAnnouncement).forEach(key =>{
+      document.getElementById(`${key}-error`).textContent = bookingAnnouncement[key];
+    })
+      
     pageLoader.classList.remove('loading');
     pageLoader.classList.add('didLoad');
 
@@ -102,9 +124,7 @@ inputFile.addEventListener("change", async () => {
   const is_valid_size = ImgSizeValidator(file);
   const is_valid_type = ImgTypeValidator(file);
   if (!is_valid_size || !is_valid_type){
-    alert("Unable to upload image. Please, check that image is .jpeg, .jpg, .webp or .png less than 3 MB");
+    document.getElementById("img-error").textContent = "Unable to upload image. Please, check that image is .jpeg, .jpg, .webp or .png less than 3 MB";
     inputFile.value = '';
   }
 });
-
-
