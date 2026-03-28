@@ -61,7 +61,7 @@ form.addEventListener('submit', async(e) =>{
     const isCowrie = (booking_obj.cowrie != undefined);
     const isCuff = (booking_obj.cuff != undefined);
     const isWash = (booking_obj.wash != undefined);
-    fetch(`https://kspkoznzo5.execute-api.us-west-2.amazonaws.com/dev/bookings`, 
+    const bookingRes = fetch(`https://kspkoznzo5.execute-api.us-west-2.amazonaws.com/dev/bookings`, 
       {
         method: "POST",
         body: JSON.stringify({
@@ -86,16 +86,12 @@ form.addEventListener('submit', async(e) =>{
           
         }
       )
-      .then(res => res.json())
-      
-      .then(data=>{
-        //alert(JSON.stringify(data.message))
-        console.log(data.message);
-      })
-      
-      .catch(err =>
-        console.log(err.error)
-      );
+    if (bookingRes.ok){
+      document.getElementById("booking").style.display = "none";
+      document.querySelector('#announcement').style.display = "block";
+    }
+    const bookingData = await bookingRes.json()
+    console.log(bookingData);
     pageLoader.classList.remove('loading');
     pageLoader.classList.add('didLoad');
 
