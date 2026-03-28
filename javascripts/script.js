@@ -33,7 +33,7 @@ form.addEventListener('submit', async(e) =>{
     pageLoader.classList.remove('didLoad');
     pageLoader.classList.add('loading');
     const errorMessage = document.querySelectorAll('.error-message');
-
+    
     errorMessage.forEach(div => {
       div.innerHTML = '';
     });
