@@ -20,24 +20,6 @@ phNo.addEventListener("input", function () {
   phNoDisplay.textContent = internationalPhNo;
   phNoDisplayDiv.appendChild(phNoDisplay);
 });
-fname.addEventListener("input", function () {
-  const countryCode = phNoObject.getSelectedCountryData().dialCode;
-  internationalPhNo = `+${countryCode} ${this.value}`;
-  phNoDisplay.textContent = internationalPhNo;
-  phNoDisplayDiv.appendChild(phNoDisplay);
-});
-note.addEventListener("input", function () {
-  const countryCode = phNoObject.getSelectedCountryData().dialCode;
-  internationalPhNo = `+${countryCode} ${this.value}`;
-  phNoDisplay.textContent = internationalPhNo;
-  phNoDisplayDiv.appendChild(phNoDisplay);
-});
-allergy.addEventListener("input", function () {
-  const countryCode = phNoObject.getSelectedCountryData().dialCode;
-  internationalPhNo = `+${countryCode} ${this.value}`;
-  phNoDisplay.textContent = internationalPhNo;
-  phNoDisplayDiv.appendChild(phNoDisplay);
-});
 
 function ImgSizeValidator(file){
   return (file.size < 3 * 1024 * 1024);
