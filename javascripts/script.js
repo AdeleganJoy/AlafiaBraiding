@@ -90,13 +90,11 @@ form.addEventListener('submit', async(e) =>{
       
       .then(data=>{
         //alert(JSON.stringify(data.message))
-        console.log(data);
-        console.log(JSON.stringify(data));
-        console.log(JSON.stringify(data).message);
+        console.log(data.message);
       })
       
-      .catch(error =>
-        alert(error.error)
+      .catch(err =>
+        console.log(err.error)
       );
     pageLoader.classList.remove('loading');
     pageLoader.classList.add('didLoad');
