@@ -165,7 +165,7 @@ form.addEventListener('submit', async(e) =>{
     }
 
 });
-date.addEventListener("change", async () => {
+date.addEventListener("input", async () => {
   document.getElementById("date-error").textContent = "";
   if (!DateValidator(date.value)){
     document.getElementById("date-error").textContent = `${date.value}: The booking date must be withing 6 months.`;
@@ -173,7 +173,7 @@ date.addEventListener("change", async () => {
   }
   
 });
-inputFile.addEventListener("change", async () => {
+inputFile.addEventListener("input", async () => {
   document.getElementById("img-error").textContent = "";
   file = inputFile.files[0]; 
   const is_valid_size = ImgSizeValidator(file);
