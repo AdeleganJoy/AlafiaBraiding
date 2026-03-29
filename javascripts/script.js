@@ -1,8 +1,19 @@
+const date = document.getElementById("date");
+
+
 let file;
 const form = document.querySelector('form');
+
 let inputFile = document.getElementById("img-input");
 let internationalPhNo;
+
+// Defining Date
+const min = new Date();
+min.setUTCHours(0,0,0,0);
+const max = AddSixMonths(min.getMonth() + 1, min.getDate(), min.getFullYear());
+
 const pageLoader = document.getElementsByClassName("page-loader")[0];
+
 const phNo = document.querySelector("#tel");
 const phNoDisplay = document.createElement("p");
 const phNoDisplayDiv = document.querySelector("#tel-display");
@@ -13,14 +24,35 @@ document.addEventListener("DOMContentLoaded", function(){
 const phNoObject = window.intlTelInput(phNo, {
   utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
 });
-
-phNo.addEventListener("input", function () {
-  const countryCode = phNoObject.getSelectedCountryData().dialCode;
-  internationalPhNo = `+${countryCode} ${this.value}`;
-  phNoDisplay.textContent = internationalPhNo;
-  phNoDisplayDiv.appendChild(phNoDisplay);
-});
-
+function AddSixMonths(mm,dd,yyyy){
+  if(mm>6){
+      yyyy+=1;
+      mm-=6;
+  }
+  else{
+      mm +=6;
+  }
+return new Date(`${yyyy}-${mm}-${dd}`);
+}
+function DateValidator(booking_date){
+    const [yyyy_booking, mm_booking, dd_booking] = booking_date.split(/[/-]/);
+    
+    const booking_dt_obj = new Date(booking_date);
+    booking_dt_obj.setUTCHours(0,0,0,0);
+    if (!booking_date){
+        return false;
+    }
+    if (!ValidateYYYYMMDD(booking_date)){
+        return false;
+    }
+    if (!ValidateMonth(yyyy_booking,mm_booking,dd_booking)){
+        return false;
+    }
+    if (!IsWithinSixMonths(booking_dt_obj)){
+        return false;
+    }
+    return booking_date;
+} 
 function ImgSizeValidator(file){
   return (file.size < 3 * 1024 * 1024);
 }
@@ -28,31 +60,48 @@ function ImgTypeValidator(file) {
     var allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
     return allowedTypes.includes(file.type);
 }
+function IsWithinSixMonths(date){
+  return ((date.getTime() >= min.getTime()) && (date.getTime() <= max.getTime()));
+}
+//Check for month exceptions: leap year and more...
+function ValidateMonth(yyyy,mm,dd){
+    if(mm==4|| mm==6||mm==9||mm==11) return (dd<31);
+    else if (mm==2) return ((dd<=28) || ((dd==29) && (yyyy%4==0)));
+    else return true;
+}
+function ValidateYYYYMMDD(date){
+    const re = new RegExp(/^(19|20)\d{2}[/-](0?[1-9]|1[0-2])[/-](0?[1-9]|[12][0-9]|3[01])$/);
+    if (re.test(date)){
+        return true;
+    }
+    return false;
+}
 form.addEventListener('submit', async(e) =>{
     e.preventDefault();
     pageLoader.classList.remove('didLoad');
     pageLoader.classList.add('loading');
+
+    // Clear error messages
+    document.querySelector('#form-error-summary').textContent = "";
     const errorMessage = document.querySelectorAll('.error-message');
-    
     errorMessage.forEach(div => {
       div.innerHTML = '';
     });
     
+    //Upload image to cloudinary
     const imgFormData = new FormData();
     imgFormData.append("file", file);
     imgFormData.append("upload_preset", "hairstyle");
-
+    try{
     const imgRes = await fetch("https://api.cloudinary.com/v1_1/deeuemovu/upload", {
         method: "POST",
         body: imgFormData
     })
-
     if (!imgRes.ok) { 
       document.getElementById("img-error").textContent = `Unable to upload image. Please, check that image is .jpeg, .jpg, .webp or .png less than 3 MB`;
       return;
     }
-
-    const img_data = await imgRes.json();
+    //Convert user input to json
     const fd = new FormData(form);
     const booking_obj = Object.fromEntries(fd);
     const isAttachment = (booking_obj.attach != undefined);
@@ -61,6 +110,9 @@ form.addEventListener('submit', async(e) =>{
     const isCowrie = (booking_obj.cowrie != undefined);
     const isCuff = (booking_obj.cuff != undefined);
     const isWash = (booking_obj.wash != undefined);
+    const img_data = await imgRes.json();
+
+    //Send booking data to AWS Lambda
     const bookingRes = await fetch(`https://kspkoznzo5.execute-api.us-west-2.amazonaws.com/dev/bookings`, 
       {
         method: "POST",
@@ -87,21 +139,42 @@ form.addEventListener('submit', async(e) =>{
         }
       )
     const bookingAnnouncement = await bookingRes.json();
+    //Handle sucessful upload
     if (bookingRes.ok){
       document.getElementById("booking").style.display = "none";
       document.querySelector('#announcement').style.display = "block";
       return;
     }
-    Object.keys(bookingAnnouncement).forEach(key =>{
-      document.getElementById(`${key}-error`).textContent = bookingAnnouncement[key];
-    })
-      
-    pageLoader.classList.remove('loading');
-    pageLoader.classList.add('didLoad');
+    //Handle failed upload
+    if (bookingRes.status == 400){
+      document.querySelector('#form-error-summary').textContent = "Please fix the highlighted fields below";
+      Object.keys(bookingAnnouncement).forEach(key =>{
+        document.getElementById(`${key}-error`).textContent = bookingAnnouncement[key];
+      })
+      }
+    else{
+      document.querySelector('#form-error-summary').textContent = "Error uploading booking information, please try again later.";
+    }
+    }
+    catch(err){
+      document.querySelector('#form-error-summary').textContent = "Error uploading booking information, please try again later.";
+    }
+    finally{
+      pageLoader.classList.remove('loading');
+      pageLoader.classList.add('didLoad');
+    }
 
 });
-
+date.addEventListener("change", async () => {
+  document.getElementById("date-error").textContent = "";
+  if (!DateValidator(date.value)){
+    document.getElementById("date-error").textContent = `${date.value}: The booking date must be withing 6 months.`;
+    inputFile.value = '';
+  }
+  
+});
 inputFile.addEventListener("change", async () => {
+  document.getElementById("img-error").textContent = "";
   file = inputFile.files[0]; 
   const is_valid_size = ImgSizeValidator(file);
   const is_valid_type = ImgTypeValidator(file);
@@ -109,4 +182,12 @@ inputFile.addEventListener("change", async () => {
     document.getElementById("img-error").textContent = "Unable to upload image. Please, check that image is .jpeg, .jpg, .webp or .png less than 3 MB";
     inputFile.value = '';
   }
+  
 });
+phNo.addEventListener("input", function () {
+  const countryCode = phNoObject.getSelectedCountryData().dialCode;
+  internationalPhNo = `+${countryCode} ${this.value}`;
+  phNoDisplay.textContent = internationalPhNo;
+  phNoDisplayDiv.appendChild(phNoDisplay);
+});
+
