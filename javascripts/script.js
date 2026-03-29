@@ -1,16 +1,8 @@
-const date = document.getElementById("date");
-
-
 let file;
 const form = document.querySelector('form');
 
 let inputFile = document.getElementById("img-input");
 let internationalPhNo;
-
-// Defining Date
-const min = new Date();
-min.setUTCHours(0,0,0,0);
-const max = AddSixMonths(min.getMonth() + 1, min.getDate(), min.getFullYear());
 
 const pageLoader = document.getElementsByClassName("page-loader")[0];
 
@@ -24,57 +16,12 @@ document.addEventListener("DOMContentLoaded", function(){
 const phNoObject = window.intlTelInput(phNo, {
   utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/utils.js"
 });
-function AddSixMonths(mm,dd,yyyy){
-  if(mm>6){
-      yyyy+=1;
-      mm-=6;
-  }
-  else{
-      mm +=6;
-  }
-return new Date(`${yyyy}-${mm}-${dd}`);
-}
-function DateValidator(booking_date){
-    const [yyyy_booking, mm_booking, dd_booking] = booking_date.split(/[/-]/);
-    
-    const booking_dt_obj = new Date(booking_date);
-    booking_dt_obj.setUTCHours(0,0,0,0);
-    if (!booking_date){
-        return false;
-    }
-    if (!ValidateYYYYMMDD(booking_date)){
-        return false;
-    }
-    if (!ValidateMonth(yyyy_booking,mm_booking,dd_booking)){
-        return false;
-    }
-    if (!IsWithinSixMonths(booking_dt_obj)){
-        return false;
-    }
-    return booking_date;
-} 
 function ImgSizeValidator(file){
   return (file.size < 3 * 1024 * 1024);
 }
 function ImgTypeValidator(file) {
     var allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
     return allowedTypes.includes(file.type);
-}
-function IsWithinSixMonths(date){
-  return ((date.getTime() >= min.getTime()) && (date.getTime() <= max.getTime()));
-}
-//Check for month exceptions: leap year and more...
-function ValidateMonth(yyyy,mm,dd){
-    if(mm==4|| mm==6||mm==9||mm==11) return (dd<31);
-    else if (mm==2) return ((dd<=28) || ((dd==29) && (yyyy%4==0)));
-    else return true;
-}
-function ValidateYYYYMMDD(date){
-    const re = new RegExp(/^(19|20)\d{2}[/-](0?[1-9]|1[0-2])[/-](0?[1-9]|[12][0-9]|3[01])$/);
-    if (re.test(date)){
-        return true;
-    }
-    return false;
 }
 form.addEventListener('submit', async(e) =>{
     e.preventDefault();
@@ -164,14 +111,6 @@ form.addEventListener('submit', async(e) =>{
       pageLoader.classList.add('didLoad');
     }
 
-});
-date.addEventListener("input", async () => {
-  document.getElementById("date-error").textContent = "";
-  if (!DateValidator(date.value)){
-    document.getElementById("date-error").textContent = `${date.value}: The booking date must be withing 6 months.`;
-    inputFile.value = '';
-  }
-  
 });
 inputFile.addEventListener("input", async () => {
   document.getElementById("img-error").textContent = "";
