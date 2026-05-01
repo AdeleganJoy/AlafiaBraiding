@@ -86,7 +86,7 @@ form.addEventListener('submit', async(e) =>{
         }
       )
     const bookingAnnouncement = await bookingRes.json();
-    console.log(bookingAnnouncement);
+      
     //Handle successful upload
     if (bookingRes.ok){
       document.getElementById("booking").style.display = "none";
